@@ -5,7 +5,11 @@ def histogram(string)
 end
 
 def prime?(n)
-  (2...n).all? { |c| (n % c) != 0 }
+  if n == 1
+    false
+  else
+    (2...n).all? { |c| (n % c) != 0 }
+  end
 end
 
 def ordinal(n)

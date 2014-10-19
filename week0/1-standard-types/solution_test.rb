@@ -12,7 +12,7 @@ class SolutionTest < Minitest::Unit::TestCase
   def test_primes
     assert_equal prime?(7), true
     assert_equal prime?(8), false
-    # assert_equal prime?(1), false
+    assert_equal prime?(1), false
   end
 
   def test_ordinals
