@@ -37,6 +37,7 @@ class HashTest < Minitest::Test
   def test_except_mutates
     hash = { a: 1, b: 2, d: nil }
     hash.except!(:d)
+
     assert_equal({ a: 1, b: 2 }, hash)
   end
 
@@ -47,6 +48,7 @@ class HashTest < Minitest::Test
   def test_compact_values_mutates
     hash = { a: 1, b: 2, c: false, d: nil }
     hash.compact_values!
+
     assert_equal({ a: 1, b: 2 }, hash)
   end
 
@@ -57,6 +59,7 @@ class HashTest < Minitest::Test
   def test_defaults_mutates
     hash = { a: 1, b: 2 }
     hash.defaults!(a: 4, c: 3)
+
     assert_equal({ a: 1, b: 2, c: 3 }, hash)
   end
 end
