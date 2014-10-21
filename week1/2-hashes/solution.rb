@@ -1,24 +1,27 @@
 class Hash
   def pick(*keys)
-    select { |key| keys.include? key }
+    new_hash = dup
+    new_hash.select { |key| keys.include? key }
   end
 
   def except(*keys)
-    reject { |key| keys.include? key }
+    new_hash = dup
+    new_hash.reject { |key| keys.include? key }
   end
 
   def compact_values
-    select { |key| (self[key] != false) && (self[key] != nil) }
+    new_hash = dup
+    new_hash.select { |key| (new_hash[key] != false) && (new_hash[key] != nil) }
   end
 
   def defaults(hash)
-    hash.each { |key, value| self[key] = value unless self.include? key }
-    self
+    new_hash = dup
+    hash.each { |key, value| new_hash[key] = value unless new_hash.include? key }
+    new_hash
   end
 
   def pick!(*keys)
-    select! { |key, value| keys == Hash[key, value] }
-    self
+    select! { |key| keys.include? key }
   end
 
   def except!(*keys)
@@ -30,6 +33,7 @@ class Hash
   end
 
   def defaults!(hash)
-    hash.each { |key, value| self.merge!(key, value) unless self.include? key }
+    hash.each { |key, value| self[key] = value unless self.include? key }
+    self
   end
 end
