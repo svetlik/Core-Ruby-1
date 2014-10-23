@@ -1,22 +1,33 @@
 module MyEnumerable
   def map
-    # Your code goes here.
+    result = []
+    each { |element| result << yield(element) }
+    result
   end
 
   def filter
-    # Your code goes here.
+    result = []
+    each { |element| result << element if yield(element)}
+    result
   end
 
   def reject
-    # Your code goes here.
+    result = []
+    each { |element| result << element unless yield(element)}
+    result
   end
 
   def reduce(initial = nil)
-    # Your code goes here.
+    remaining = dup
+    
+    unless remaining.empty? 
+      buffer = yield buffer, remaining.shift
+    end
+    buffer
   end
 
   def any?
-    # Your code goes here.
+    
   end
 
   def all?
@@ -36,6 +47,54 @@ module MyEnumerable
   end
 
   def size
+    # Your code goes here.
+  end
+
+  # Groups the collection by result of the block.
+  # Returns a hash where the keys are the evaluated
+  # result from the block and the values are arrays
+  # of elements in the collection that correspond to
+  # the key.
+  def group_by
+  end
+
+  def min
+    # Your code goes here.
+  end
+
+  def min_by
+    # Your code goes here.
+  end
+
+  def max
+    # Your code goes here.
+  end
+
+  def max_by
+    # Your code goes here.
+  end
+
+  def minmax
+    # Your code goes here.
+  end
+
+  def minmax_by
+    # Your code goes here.
+  end
+
+  def take(n)
+    # Your code goes here.
+  end
+
+  def take_while
+    # Your code goes here.
+  end
+
+  def drop(n)
+    # Your code goes here.
+  end
+
+  def drop_while
     # Your code goes here.
   end
 end
