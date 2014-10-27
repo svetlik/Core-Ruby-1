@@ -65,7 +65,7 @@ class SolutionTest < Minitest::Test
     hash = { '3' => '3', '4' => '4', '5' => '5' }
 
     con_array = array.each_cons(2).all? { |x, y| x < y }
-    con_hash = hash.each_cons(2).all? { |(_, x_value), (_, y_value)|  x_value < y_value }
+    con_hash = hash.each_cons(2).all? { |(_, x), (_, y)| x < y }
 
     assert_equal false, con_array
     assert_equal true, con_hash
