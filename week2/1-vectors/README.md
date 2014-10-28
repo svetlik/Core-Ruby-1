@@ -26,7 +26,7 @@ class Vector2D
     # Your code goes here.
   end
 
-  def magnitute
+  def magnitude
     # The same as #length. Can we implement it without duplicating or calling
     # the #length method?
   end
@@ -35,7 +35,7 @@ class Vector2D
     # Your code goes here.
   end
 
-  def ==(vector_or_scalar)
+  def ==(vector)
     # Your code goes here.
   end
 
@@ -92,7 +92,7 @@ class Vector
     # Your code goes here.
   end
 
-  def magnitute
+  def magnitude
     # The same as #length. Can we implement it without duplicating or calling
     # the #length method?
   end
