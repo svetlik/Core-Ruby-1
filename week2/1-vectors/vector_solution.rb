@@ -1,41 +1,41 @@
 class Vector
   def initialize(*components)
-    # Let's make it more interesting here. I wanna initialize the vector with
-    # `Vector.new(1, 2, 3, 4)` and `Vector.new([1, 2, 3, 4])` and expect the
-    # same vector.
+    @components = []
+    components.flatten.each { |component| @components << component }
   end
 
   def dimension
-    # Your code goes here
+    @components.size
   end
 
   def length
-    # Your code goes here.
+    @components.map { |component| component**2 }.reduce(:+)**0.5
   end
 
-  def magnitute
-    # The same as #length. Can we implement it without duplicating or calling
-    # the #length method?
-  end
+  alias_method :magnitude, :length
 
   def normalize
-    # Your code goes here.
+    @components.map { |component| component / length }
   end
 
   def [](index)
-    # Your code goes here.
+    @components[index]
   end
 
-  def []=(index)
-    # Your code goes here.
+  def []=(index, value)
+    @components[index] = value
   end
 
   def ==(other)
-    # Your code goes here.
+    @components.all? { |index| @components[index] == other[index] }
   end
 
-  def +(vector_of_same_dimension_or_scalar)
-    # Your code goes here.
+  def +(other)
+    if other.is_a? Numeric
+      @components.map { |component| component + other }
+    else
+      @components.map { |index| @components[index] + other[index] }
+    end
   end
 
   def -(vector_of_same_dimension_or_scalar)
@@ -51,10 +51,10 @@ class Vector
   end
 
   def to_s
-    # Your code goes here.
+    "Vector (#{@components}) with object_id: #{object_id}"
   end
 
   def inspect
-    # Your code goes here.
+    [@components, object_id]
   end
 end

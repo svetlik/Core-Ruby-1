@@ -1,60 +1,77 @@
-class Vector
-  def initialize(*components)
-    # Let's make it more interesting here. I wanna initialize the vector with
-    # `Vector.new(1, 2, 3, 4)` and `Vector.new([1, 2, 3, 4])` and expect the
-    # same vector.
+require 'minitest/autorun'
+
+require_relative 'vector_solution'
+
+class SolutionTest < Minitest::Test
+  def test_length
+    vector = Vector.new(3, 4)
+
+    assert_equal 5, vector.length
   end
 
-  def dimension
-    # Your code goes here
+  def test_magnitude
+    vector = Vector.new(3, 4)
+
+    assert_equal 5, vector.magnitude
   end
 
-  def length
-    # Your code goes here.
+  def test_normalize
+    # TODO
+    vector = Vector.new(3, 4)
+
+    assert_equal true, true
   end
 
-  def magnitute
-    # The same as #length. Can we implement it without duplicating or calling
-    # the #length method?
+  def test_equal
+    vector = Vector.new(3, 4)
+    another_vector = Vector.new(3, 4)
+    unequal_vector = Vector.new(4, 5)
+
+    assert_equal true, vector == another_vector
+    assert_equal false, vector == unequal_vector
   end
 
-  def normalize
-    # Your code goes here.
+  def test_add
+    vector = Vector.new(3, 4)
+    number = 5
+    another_vector = Vector.new(4, 5)
+
+    assert_equal [8, 9], vector + number
+    assert_equal [7, 9], vector + another_vector
   end
 
-  def [](index)
-    # Your code goes here.
+  def test_subtract
+    vector = Vector.new(3, 4)
+    number = 3
+    another_vector = Vector.new(4, 5)
+
+    assert_equal [0, 1], vector - number
+    assert_equal [-1, -1], vector - another_vector
   end
 
-  def []=(index)
-    # Your code goes here.
+  def test_multiply
+    vector = Vector.new(3, 4)
+    number = 3
+
+    assert_equal [9, 12], vector * number
   end
 
-  def ==(other)
-    # Your code goes here.
+  def test_divide
+    vector = Vector.new(3, 4)
+    number = 3
+
+    assert_equal [1, 4 / 3], vector / number
   end
 
-  def +(vector_of_same_dimension_or_scalar)
-    # Your code goes here.
+  def test_to_s
+    vector = Vector.new(3, 4)
+
+    assert_equal "Vector ([3, 4]) with object_id: #{vector.object_id}", vector.to_s 
   end
 
-  def -(vector_of_same_dimension_or_scalar)
-    # Your code goes here.
-  end
+  def test_inspect
+    vector = Vector.new(3, 4)
 
-  def *(scalar)
-    # Your code goes here.
-  end
-
-  def /(scalar)
-    # Your code goes here.
-  end
-
-  def to_s
-    # Your code goes here.
-  end
-
-  def inspect
-    # Your code goes here.
+    assert_equal true, vector.inspect.include?(vector.object_id)
   end
 end
