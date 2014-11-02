@@ -27,27 +27,31 @@ class Vector
   end
 
   def ==(other)
-    @components.all? { |index| @components[index] == other[index] }
+    dimension.times.all? { |index| self[index] == other[index] }
   end
 
   def +(other)
     if other.is_a? Numeric
       @components.map { |component| component + other }
     else
-      @components.map { |index| @components[index] + other[index] }
+      dimension.times.map { |index| self[index] + other[index] }
     end
   end
 
-  def -(vector_of_same_dimension_or_scalar)
-    # Your code goes here.
+  def -(other)
+    if other.is_a? Numeric
+      @components.map { |component| component - other }
+    else
+      dimension.times.map { |index| self[index] - other[index] }
+    end
   end
 
-  def *(scalar)
-    # Your code goes here.
+  def *(other)
+    @components.map { |component| component * other }
   end
 
-  def /(scalar)
-    # Your code goes here.
+  def /(other)
+    @components.map { |component| component / other }
   end
 
   def to_s

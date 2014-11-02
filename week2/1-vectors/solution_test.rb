@@ -16,10 +16,9 @@ class SolutionTest < Minitest::Test
   end
 
   def test_normalize
-    # TODO
     vector = Vector2D.new(3, 4)
 
-    assert_equal true, true
+    assert_equal true, vector.normalize
   end
 
   def test_equal
@@ -65,9 +64,8 @@ class SolutionTest < Minitest::Test
 
   def test_to_s
     vector = Vector2D.new(3, 4)
-
-    assert_equal "Vector (3, 4) with object_id: #{vector.object_id}",\
-    vector.to_s 
+    string = "Vector (3, 4) with object_id: #{vector.object_id}"
+    assert_equal string, vector.to_s
   end
 
   def test_inspect
