@@ -1,18 +1,34 @@
+require 'yaml'
+
 class Track
-  # Your code goes here.
+  attr_accessor :artist, :name, :album, :genre
+  def initialize(*track_info)
+    @artist = track_info[0]
+    @name = track_info[1]
+    @album = track_info[2]
+    @genre = track_info[3]
+    if track_info[0].class != String
+      hash_info = track_info[0]
+      @artist = hash_info[:artist]
+      @name = hash_info[:name]
+      @album = hash_info[:album]
+      @genre = hash_info[:genre]
+    end
+  end
 end
 
 class Playlist
   def self.from_yaml(path)
-    # Your code goes here.
+    # check for field that is missing -> when parsing the yaml file
+    @tracks = YAML.load_file(path)
   end
 
   def initialize(*tracks)
-    # Your code goes here.
+    @tracks = tracks
   end
 
   def each
-    # Your code goes here.
+    return to_enum(:each) unless block_given?
   end
 
   def find(&block)
@@ -27,7 +43,9 @@ class Playlist
   end
 
   def find_by_name(name)
-    # Finds all the tracks by the name
+    new_playlist = Playlist.new
+    @tracks.each { |track| new_playlist << track unless track.name != name }
+    new_playlist
   end
 
   def find_by_artist(artist)
@@ -43,11 +61,11 @@ class Playlist
   end
 
   def shuffle
-    # Give me a new playlist that shuffles the tracks of the current one.
+    @tracks.shuffle
   end
 
   def random
-    # Give me a random track.
+    @tracks.sample
   end
 
   def to_s
@@ -56,6 +74,9 @@ class Playlist
   end
 
   def &(playlist)
+    new_playlist = self
+    playlist.each { |track| new_playlist << track }
+    new_playlist
     # Your code goes here. This _should_ return new playlist.
   end
 
