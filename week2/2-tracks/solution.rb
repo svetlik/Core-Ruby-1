@@ -1,30 +1,41 @@
 require 'yaml'
 
 class Track
-  attr_accessor :artist, :name, :album, :genre
-  def initialize(*track_info)
-    @artist = track_info[0]
-    @name = track_info[1]
-    @album = track_info[2]
-    @genre = track_info[3]
-    if track_info[0].class != String
-      hash_info = track_info[0]
-      @artist = hash_info[:artist]
-      @name = hash_info[:name]
-      @album = hash_info[:album]
-      @genre = hash_info[:genre]
-    end
+  attr_reader :artist, :name, :album, :genre
+  def initialize(track_as_hash = {}, *track_info)
+    p track_as_hash
+    p track_info
+    @artist = track_info.fetch(0, track_as_hash[:artist] || track_as_hash['artist'])
+    @name = track_info.fetch(1, track_as_hash[:name] || track_as_hash['name'])
+    @album = track_info.fetch(2, track_as_hash[:album] || track_as_hash['album'])
+    @genre = track_info.fetch(3, track_as_hash[:genre] || track_as_hash['genre'])
+  end
+
+  def artist
+    @artist
+  end
+
+  def name
+    @name
+  end
+
+  def album
+    @album
+  end
+
+  def genre
+    @genre
   end
 end
 
 class Playlist
   def self.from_yaml(path)
-    # check for field that is missing -> when parsing the yaml file
-    @tracks = YAML.load_file(path)
+    Playlist.new *YAML.load_file(path).map { |track_as_hash| Track.new(track_as_hash) }
   end
 
   def initialize(*tracks)
-    @tracks = tracks
+    @tracks = []
+    tracks.each { |track| @tracks << track }
   end
 
   def each
@@ -32,6 +43,8 @@ class Playlist
   end
 
   def find(&block)
+    new_playlist = Playlist.new
+    new_playlist = select { |track| yield(track) == true }
     # Filter the playlist by a block. Should return a new Playlist.
   end
 
@@ -44,20 +57,25 @@ class Playlist
 
   def find_by_name(name)
     new_playlist = Playlist.new
-    @tracks.each { |track| new_playlist << track unless track.name != name }
-    new_playlist
+    @tracks.each { |track| new_playlist << track if track.name == name }
   end
 
   def find_by_artist(artist)
-    # Finds all the tracks by the artist. Should return a new Playlist.
+    new_playlist = Playlist.new
+    @tracks.each { |track| new_playlist << track if track.artist == artist }
+    new_playlist
   end
 
   def find_by_album(album)
-    # Finds all the tracks from the album. Should return a new Playlist.
+    new_playlist = Playlist.new
+    @tracks.each { |track| new_playlist << track if track.album == album }
+    new_playlist
   end
 
   def find_by_genre(genre)
-    # Finds all the tracks by genre. Should return a new Playlist.
+    new_playlist = Playlist.new
+    @tracks.each { |track| new_playlist << track if track.genre == genre }
+    new_playlist
   end
 
   def shuffle
@@ -89,16 +107,33 @@ class Playlist
   end
 end
 
-class AwesomeRockFilter
-  AWESOME_ARTISTS = %w(Led\ Zeppellin The\ Doors Black\ Sabbath)
-
-  def call(track)
-    AWESOME_ARTISTS.include? track.artist
+class HashWithIndifferentAccess
+  def initialize(hash)
+    @hash = {}
+    hash.each do |key, value|
+      if key.is_a? Symbol
+        @hash[key.to_s] = value
+      else
+        @hash[key] = value
+      end
+    end
   end
-end
 
-class HashWithIndifferentAccess < Hash
-  # Your code goes here.
+  def [](key)
+    if key.is_a? Symbol
+      @hash[key.to_s]
+    else
+      @hash[key]
+    end
+  end
+
+  def fetch(key)
+    if key.is_a? Symbol
+      @hash.fetch key.to_s
+    else
+      @hash.fetch key
+    end
+  end
 end
 
 class Hash
