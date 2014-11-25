@@ -59,10 +59,11 @@ end
 def fizzbuzz(range)
   array = []
   range.each do |n|
-    if    (n % 15 == 0) then array << :fizzbuzz
-    elsif (n % 5 == 0)  then array << :buzz
-    elsif (n % 3 == 0)  then array << :fizz
-    else  array << n
+    case
+    when n % 15 == 0 then array << :fizzbuzz
+    when n % 5 == 0  then array << :buzz
+    when n % 3 == 0  then array << :fizz
+    else                  array << n
     end
   end
   array
