@@ -11,14 +11,20 @@ class ArrayTest < Minitest::Test
   end
 
   def test_index_by
-    assert_equal({ 3 => 'bar', 6 => 'larodi' }, %w(foo larodi bar).index_by(&:length))
-    assert_equal({ 'Einstein' => 'Albert Einstein' }, ['Albert Einstein', 'Albert Einstein'].index_by { |name| name.split(' ').last })
-    assert_equal({ 'Coltrane' => 'John Coltrane', 'Davis' => 'Miles Davis' }, ['John Coltrane', 'Miles Davis'].index_by { |name| name.split(' ').last })
+    words_length = { 3 => 'bar', 6 => 'larodi' }
+    einstein = { 'Einstein' => 'Albert Einstein' }
+    ein_array = ['Albert Einstein', 'Albert Einstein']
+    names = { 'Coltrane' => 'John Coltrane', 'Davis' => 'Miles Davis' }
+    names_array = ['John Coltrane', 'Miles Davis']
+    assert_equal(words_length, %w(foo larodi bar).index_by(&:length))
+    assert_equal(einstein, ein_array.index_by { |name| name.split(' ').last })
+    assert_equal(names, names_array.index_by { |name| name.split(' ').last })
   end
 
   def test_occurrences_count
+    hash = { 'a' => 3, 'b' => 2, 'c' => 1 }
     assert_equal({ foo: 2, bar: 1 }, [:foo, :bar, :foo].occurrences_count)
-    assert_equal({ 'a' => 3, 'b' => 2, 'c' => 1 }, %w(a a b c b a).occurrences_count)
+    assert_equal(hash, %w(a a b c b a).occurrences_count)
   end
 
   def test_subarray_count

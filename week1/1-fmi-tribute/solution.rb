@@ -9,7 +9,7 @@ class Array
 
   def index_by
     hash = {}
-    map { |element| hash[yield(element)] = element }
+    each { |element| hash[yield(element)] = element }
     hash
   end
 
