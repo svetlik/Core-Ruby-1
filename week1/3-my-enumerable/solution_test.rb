@@ -3,6 +3,7 @@ require 'minitest/autorun'
 require_relative 'solution'
 
 class SolutionTest < Minitest::Test
+  
   class Collection
     include MyEnumerable
 
@@ -39,7 +40,7 @@ class SolutionTest < Minitest::Test
   def test_reduce
     collection = Collection.new(*1..10)
 
-    assert_equal 55, collection.reduce(0) { |sum, n| sum + n }
+    assert_equal 55, collection.reduce(0) { |a, e| a + e }
   end
 
   def test_any?
@@ -94,7 +95,8 @@ class SolutionTest < Minitest::Test
 
   def test_group_by
     collection = Collection.new(*1..6)
-    assert_equal({ 0 => [3, 6], 1 => [1, 4], 2 => [2, 5] }, collection.group_by { |i| i % 3 })
+    numbers_hash = { 0 => [3, 6], 1 => [1, 4], 2 => [2, 5] }
+    assert_equal(numbers_hash, collection.group_by { |i| i % 3 })
 
     assert_equal true, collection.group_by.is_a?(Enumerator)
   end
@@ -116,7 +118,8 @@ class SolutionTest < Minitest::Test
   def test_max
     collection = Collection.new(*1..10)
     word_collection = %w(albatross dog horse)
-    assert_equal 'albatross', word_collection.max { |a, b| a.length <=> b.length }
+    word = 'albatross'
+    assert_equal word, word_collection.max { |a, b| a.length <=> b.length }
     assert_equal 10, collection.max
   end
 
@@ -131,7 +134,8 @@ class SolutionTest < Minitest::Test
   def test_minmax
     collection = Collection.new(*1..10)
     word_collection = %w(albatross dog horse)
-    assert_equal %w(dog albatross), word_collection.minmax { |a, b| a.length <=> b.length }
+    words = %w(dog albatross)
+    assert_equal words, word_collection.minmax { |a, b| a.length <=> b.length }
     assert_equal [1, 10], collection.minmax
   end
 

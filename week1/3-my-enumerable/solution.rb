@@ -23,7 +23,7 @@ module MyEnumerable
   def reduce(initial = nil)
     each do |element|
       if initial.nil?
-        initial = element
+        initial = element || yield(initial, element)
       else
         initial = yield(initial, element)
       end
@@ -34,9 +34,9 @@ module MyEnumerable
   def any?
     result = false
     if block_given?
-      each { |element| result = true unless yield(element) == false }
+      each { |element| result = true if yield(element) }
     else
-      each { |element| result = true unless element == false }
+      each { |element| result = true if element }
     end
     result
   end
@@ -44,9 +44,9 @@ module MyEnumerable
   def all?
     result = true
     if block_given?
-      each { |element| result = false unless yield(element) != false }
+      each { |element| result = false unless yield(element) }
     else
-      each { |element| result = false unless element != false }
+      each { |element| result = false unless element }
     end
     result
   end
@@ -61,9 +61,8 @@ module MyEnumerable
   end
 
   def include?(element)
-    result = false
-    each { |item| result = true unless item != element }
-    result
+    each { |item| return true if item == element }
+    false
   end
 
   def count(element = nil)
@@ -78,12 +77,6 @@ module MyEnumerable
     each { 1 }.count
   end
 
-  # (1..6).group_by { |i| i%3 }   #=> {0=>[3, 6], 1=>[1, 4], 2=>[2, 5]}
-  # Groups the collection by result of the block.
-  # Returns a hash where the keys are the evaluated
-  # result from the block and the values are arrays
-  # of elements in the collection that correspond to
-  # the key.
   def group_by
     return to_enum(:group_by) unless block_given?
     hash = {}
@@ -100,9 +93,9 @@ module MyEnumerable
   def min
     result = 1.0 / 0.0
     if block_given?
-      each { |item| result = item unless yield(item) >= result }
+      each { |item| result = item if yield(item) < result }
     else
-      each { |item| result = item unless item >= result }
+      each { |item| result = item if item < result }
     end
     result
   end
@@ -110,16 +103,16 @@ module MyEnumerable
   def min_by
     return to_enum(:min_by) unless block_given?
     result = 1.0 / 0.0
-    each { |item| item unless yield(item) >= result }
+    each { |item| item if yield(item) < result }
     result
   end
 
   def max
     result = -1.0 / 0.0
     if block_given?
-      each { |item| result = item unless yield(item) <= result }
+      each { |item| result = item if yield(item) > result }
     else
-      each { |item| result = item unless item <= result }
+      each { |item| result = item if item > result }
     end
     result
   end
@@ -127,7 +120,7 @@ module MyEnumerable
   def max_by
     return to_enum(:max_by) unless block_given?
     result = -1.0 / 0.0
-    each { |item| item unless yield(item) <= result }
+    each { |item| item if yield(item) > result }
     result
   end
 
@@ -144,7 +137,7 @@ module MyEnumerable
     result = []
     each do |element|
       result << element
-      return result unless result.size != n
+      return result if result.size == n
     end
     result
   end
@@ -161,7 +154,7 @@ module MyEnumerable
     counter = 0
     each do |element|
       counter += 1
-      result << element unless counter <= n
+      result << element if counter > n
     end
     result
   end
